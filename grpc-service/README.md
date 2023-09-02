@@ -14,4 +14,4 @@ go install \
     google.golang.org/grpc/cmd/protoc-gen-go-grpc
 ```
 
-Install [Buf CLI][https://buf.build/docs/installation]
+Install [Buf CLI](https://buf.build/docs/installation)
