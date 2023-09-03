@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 
-	pb "github.com/stevenweathers/go-templates/grpc-service/gen/go"
+	pb "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
 )
 
 // echoCmd represents the echo command

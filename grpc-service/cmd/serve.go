@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	pb "github.com/stevenweathers/go-templates/grpc-service/gen/go"
+	pb "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
 )
 
 // serveCmd represents the serve command
@@ -112,7 +112,7 @@ func serve() {
 		},
 	}
 
-	fmt.Printf("grpc on port: %d\n", port)
+	logger.Info("starting grpc and http service", slog.Int("port", port))
 	err = srv.Serve(tls.NewListener(conn, srv.TLSConfig))
 
 	if err != nil {

@@ -2,8 +2,6 @@
 
 [GRPC](https://grpc.io/) service with embedded [GRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway) for REST HTTP
 
-Recommended UI Tool to test GRPC endpoints: [GRPC UI](https://github.com/fullstorydev/grpcui)
-
 ## Install GPRC tools
 
 ```shell
@@ -15,3 +13,16 @@ go install \
 ```
 
 Install [Buf CLI](https://buf.build/docs/installation)
+
+## Generate gprc code and swagger json
+
+```shell
+buf generate
+```
+
+## Run service locally
+```shell
+go run . serve
+```
+
+## [GRPC UI](https://github.com/fullstorydev/grpcui) to test GRPC endpoints (like a Postman for HTTP) 

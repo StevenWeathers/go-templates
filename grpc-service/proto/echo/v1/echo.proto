@@ -1,9 +1,7 @@
 syntax = "proto3";
-package echopb;
+package proto.echo.v1;
 
 import "google/api/annotations.proto";
-
-option go_package = "./";
 
 message EchoMessage {
  string value = 1;

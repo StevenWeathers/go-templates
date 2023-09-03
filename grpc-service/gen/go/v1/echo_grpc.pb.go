@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             (unknown)
-// source: service.proto
+// source: v1/echo.proto
 
-package grpc_service
+package echov1
 
 import (
 	context "context"
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	EchoService_Echo_FullMethodName = "/echopb.EchoService/Echo"
+	EchoService_Echo_FullMethodName = "/proto.echo.v1.EchoService/Echo"
 )
 
 // EchoServiceClient is the client API for EchoService service.
@@ -96,7 +96,7 @@ func _EchoService_Echo_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var EchoService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "echopb.EchoService",
+	ServiceName: "proto.echo.v1.EchoService",
 	HandlerType: (*EchoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -105,5 +105,5 @@ var EchoService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "service.proto",
+	Metadata: "v1/echo.proto",
 }

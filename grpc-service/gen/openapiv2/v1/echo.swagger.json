@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "service.proto",
+    "title": "v1/echo.proto",
     "version": "version not set"
   },
   "tags": [
@@ -23,7 +23,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/echopbEchoMessage"
+              "$ref": "#/definitions/v1EchoMessage"
             }
           },
           "default": {
@@ -39,7 +39,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/echopbEchoMessage"
+              "$ref": "#/definitions/v1EchoMessage"
             }
           }
         ],
@@ -50,14 +50,6 @@
     }
   },
   "definitions": {
-    "echopbEchoMessage": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -83,6 +75,14 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v1EchoMessage": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
         }
       }
     }
