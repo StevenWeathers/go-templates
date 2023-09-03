@@ -3,7 +3,8 @@ Some opinionated templates for building Go projects. These are all currently **E
 
 ## Templates
 
-- [GRPC service](grpc-service): GRPC service with GRPC Gateway for REST HTTP
+- [GRPC service](grpc-service/): GRPC service with GRPC Gateway for REST HTTP
+- [Webapp](webapp/): Webapp with Svelte for the UI
 
 ## Download templates with gonew
 
