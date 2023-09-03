@@ -9,6 +9,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/stevenweathers/go-templates/grpc-service/internal/echo"
+
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/spf13/cobra"
 	swaggerui "github.com/stevenweathers/go-templates/grpc-service/third_party"
@@ -16,7 +18,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	pb "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
+	echov1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
 )
 
 // serveCmd represents the serve command
@@ -32,20 +34,7 @@ func init() {
 	RootCmd.AddCommand(serveCmd)
 }
 
-type myService struct {
-	pb.EchoServiceServer
-}
-
-func (m *myService) Echo(c context.Context, s *pb.EchoMessage) (*pb.EchoMessage, error) {
-	fmt.Printf("rpc request Echo(%q)\n", s.Value)
-	return s, nil
-}
-
-func newServer() pb.EchoServiceServer {
-	return new(myService)
-}
-
-// grpcHandlerFunc returns an http.Handler that delegates to grpcServer on incoming gRPC
+// grpcHandlerFunc returns a http.Handler that delegates to grpcServer on incoming gRPC
 // connections or otherHandler otherwise. Copied from cockroachdb.
 func grpcHandlerFunc(grpcServer *grpc.Server, otherHandler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -74,7 +63,7 @@ func serve() {
 	}
 
 	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterEchoServiceServer(grpcServer, newServer())
+	echov1.RegisterEchoServiceServer(grpcServer, echo.NewServer())
 	ctx := context.Background()
 
 	dcreds := credentials.NewTLS(&tls.Config{
@@ -84,12 +73,13 @@ func serve() {
 	dopts := []grpc.DialOption{grpc.WithTransportCredentials(dcreds)}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/swagger-ui/swagger.json", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./gen/openapiv2/service.swagger.json")
+	// serve the echo swagger json
+	mux.HandleFunc("/swagger-ui/echo.json", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./gen/openapiv2/v1/echo.swagger.json")
 	})
 
 	gwmux := runtime.NewServeMux()
-	err := pb.RegisterEchoServiceHandlerFromEndpoint(ctx, gwmux, demoAddr, dopts)
+	err := echov1.RegisterEchoServiceHandlerFromEndpoint(ctx, gwmux, demoAddr, dopts)
 	if err != nil {
 		fmt.Printf("serve: %v\n", err)
 		return

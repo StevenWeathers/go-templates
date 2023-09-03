@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 
-	pb "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
+	echov1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
 )
 
 // echoCmd represents the echo command
@@ -26,9 +26,9 @@ var echoCmd = &cobra.Command{
 			grpclog.Fatalf("fail to dial: %v", err)
 		}
 		defer conn.Close()
-		client := pb.NewEchoServiceClient(conn)
+		client := echov1.NewEchoServiceClient(conn)
 
-		msg, err := client.Echo(context.Background(), &pb.EchoMessage{Value: strings.Join(os.Args[2:], " ")})
+		msg, err := client.Echo(context.Background(), &echov1.EchoMessage{Value: strings.Join(os.Args[2:], " ")})
 		println(msg.Value)
 
 	},
