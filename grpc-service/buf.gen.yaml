@@ -2,7 +2,7 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/stevenweathers/go-templates/grpc-service
+    default: github.com/stevenweathers/go-templates/grpc-service/gen/go
     except:
       - buf.build/googleapis/googleapis
       - buf.build/grpc-ecosystem/grpc-gateway
@@ -17,6 +17,7 @@ plugins:
       - paths=source_relative
   - plugin: buf.build/grpc-ecosystem/gateway:v2.17.1
     out: gen/go
-    opt: paths=source_relative
+    opt:
+      - paths=source_relative
   - plugin: buf.build/grpc-ecosystem/openapiv2:v2.17.1
     out: gen/openapiv2

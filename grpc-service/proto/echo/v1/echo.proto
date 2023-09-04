@@ -1,5 +1,5 @@
 syntax = "proto3";
-package proto.echo.v1;
+package echo.v1;
 
 import "google/api/annotations.proto";
 

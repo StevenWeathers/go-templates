@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"os"
 
-	echov1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
+	echov1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/echo/v1"
 )
 
 type Service struct {

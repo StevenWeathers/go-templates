@@ -1,0 +1,39 @@
+syntax = "proto3";
+package authors.v1;
+
+import "google/api/annotations.proto";
+
+message Author {
+  int64 ID = 1;
+  string Name = 2;
+  string Bio = 3;
+}
+
+message Authors {
+  repeated Author author = 1;
+}
+
+message ReadAuthorRequest {
+  int64 ID = 1;
+}
+
+message voidNoParam {}
+
+service AuthorsService {
+  rpc readAuthors(voidNoParam) returns (Authors) {
+    option (google.api.http) = {
+      get: "/v1/authors"
+    };
+  }
+  rpc createAuthor(Author) returns (Author) {
+    option (google.api.http) = {
+      post: "/v1/authors"
+      body: "*"
+    };
+  }
+  rpc readAuthor(ReadAuthorRequest) returns (Author) {
+    option (google.api.http) = {
+      get: "/v1/authors/{ID}"
+    };
+  }
+}

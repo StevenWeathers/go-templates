@@ -18,7 +18,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	echov1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/v1"
+	echov1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/echo/v1"
 )
 
 // serveCmd represents the serve command
@@ -75,7 +75,7 @@ func serve() {
 	mux := http.NewServeMux()
 	// serve the echo swagger json
 	mux.HandleFunc("/swagger-ui/echo.json", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./gen/openapiv2/v1/echo.swagger.json")
+		http.ServeFile(w, r, "./gen/openapiv2/echo/v1/echo.swagger.json")
 	})
 
 	gwmux := runtime.NewServeMux()

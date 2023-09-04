@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "v1/echo.proto",
+    "title": "option go_package = \"github.com/stevenweathers/go-templates/grpc-service/gen/go/echo/v1;echov1\";",
     "version": "version not set"
   },
   "tags": [
