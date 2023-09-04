@@ -9,6 +9,11 @@ import (
 	"os"
 	"strings"
 
+	"github.com/jackc/pgx/v5"
+	"github.com/stevenweathers/go-templates/grpc-service/db"
+	authorsv1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/authors/v1"
+	"github.com/stevenweathers/go-templates/grpc-service/internal/authors"
+
 	"github.com/stevenweathers/go-templates/grpc-service/internal/echo"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -58,12 +63,22 @@ func serveSwagger(mux *http.ServeMux) {
 
 func serve() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	// urlExample := "postgres://username:password@localhost:5432/database_name"
+	dbConn, dbErr := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if dbErr != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", dbErr)
+		os.Exit(1)
+	}
+	defer dbConn.Close(context.Background())
+	authorQueries := db.New(dbConn)
+
 	opts := []grpc.ServerOption{
 		grpc.Creds(credentials.NewClientTLSFromCert(demoCertPool, "localhost:10000")),
 	}
 
 	grpcServer := grpc.NewServer(opts...)
 	echov1.RegisterEchoServiceServer(grpcServer, echo.NewServer())
+	authorsv1.RegisterAuthorsServiceServer(grpcServer, authors.NewServer(authorQueries))
 	ctx := context.Background()
 
 	dcreds := credentials.NewTLS(&tls.Config{
