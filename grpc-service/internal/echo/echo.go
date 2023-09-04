@@ -10,7 +10,7 @@ import (
 )
 
 type Service struct {
-	echov1.EchoServiceServer
+	echov1.UnimplementedEchoServiceServer
 }
 
 func (es *Service) Echo(ctx context.Context, message *echov1.EchoMessage) (*echov1.EchoMessage, error) {
