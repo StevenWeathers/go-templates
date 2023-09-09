@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"os"
 
 	echov1 "github.com/stevenweathers/go-templates/grpc-service/gen/go/echo/v1"
 )
@@ -14,8 +13,7 @@ type Service struct {
 }
 
 func (es *Service) Echo(ctx context.Context, message *echov1.EchoMessage) (*echov1.EchoMessage, error) {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	logger.Info(fmt.Sprintf("rpc request Echo(%q)\n", message.Value))
+	slog.Info(fmt.Sprintf("rpc request Echo(%q)\n", message.Value))
 	return message, nil
 }
 

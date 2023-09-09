@@ -62,11 +62,10 @@ func serveSwagger(mux *http.ServeMux) {
 }
 
 func serve() {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	// urlExample := "postgres://username:password@localhost:5432/database_name"
 	dbConn, dbErr := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if dbErr != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", dbErr)
+		slog.Error(fmt.Sprintf("Unable to connect to database: %v", dbErr))
 		os.Exit(1)
 	}
 	defer dbConn.Close(context.Background())
@@ -96,7 +95,7 @@ func serve() {
 	gwmux := runtime.NewServeMux()
 	err := echov1.RegisterEchoServiceHandlerFromEndpoint(ctx, gwmux, demoAddr, dopts)
 	if err != nil {
-		fmt.Printf("serve: %v\n", err)
+		slog.Error(fmt.Sprintf("serve: %v", err))
 		return
 	}
 
@@ -117,11 +116,11 @@ func serve() {
 		},
 	}
 
-	logger.Info("starting grpc and http service", slog.Int("port", port))
+	slog.Info("starting grpc and http service", slog.Int("port", port))
 	err = srv.Serve(tls.NewListener(conn, srv.TLSConfig))
 
 	if err != nil {
-		logger.Error("ListenAndServe: ", err)
+		slog.Error("ListenAndServe: ", err)
 		panic(err)
 	}
 

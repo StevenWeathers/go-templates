@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -36,12 +36,14 @@ Or over HTTP 1.1 with curl:
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		slog.Error("error executing root command", err)
 		os.Exit(-1)
 	}
 }
 
 func init() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout))
+	slog.SetDefault(logger)
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
@@ -66,6 +68,6 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		slog.Info("Using config file:", slog.String("configFileUsed", viper.ConfigFileUsed()))
 	}
 }

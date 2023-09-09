@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"os"
 
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/stevenweathers/go-templates/grpc-service/db"
@@ -18,8 +17,7 @@ type Service struct {
 }
 
 func (as *Service) createAuthor(ctx context.Context, author *authorsv1.Author) (*authorsv1.Author, error) {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	logger.Info(fmt.Sprintf("rpc request createAuthor(%q)", author))
+	slog.Info(fmt.Sprintf("rpc request createAuthor(%q)", author))
 
 	bio := pgtype.Text{
 		String: author.Bio,
@@ -30,7 +28,7 @@ func (as *Service) createAuthor(ctx context.Context, author *authorsv1.Author) (
 		Bio:  bio,
 	})
 	if err != nil {
-		logger.Error(fmt.Sprintf("CreateAuthor failed: %v", err))
+		slog.Error(fmt.Sprintf("CreateAuthor failed: %v", err))
 		return author, err
 	}
 

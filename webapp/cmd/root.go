@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"context"
-	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/stevenweathers/go-templates/webapp/internal/config"
@@ -31,12 +31,14 @@ on localhost:8080:
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		slog.Error("error executing root command", err)
 		os.Exit(-1)
 	}
 }
 
 func init() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout))
+	slog.SetDefault(logger)
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.

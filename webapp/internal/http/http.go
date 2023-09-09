@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/stevenweathers/go-templates/webapp/ui"
@@ -21,8 +20,7 @@ func (o *Endpoints) handle() {
 }
 
 func (o *Endpoints) ListenAndServe(ctx context.Context) error {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	logger.InfoContext(ctx, fmt.Sprintf("Listening on %s", o.config.ListenAddress))
+	slog.InfoContext(ctx, fmt.Sprintf("Listening on %s", o.config.ListenAddress))
 	return http.ListenAndServe(o.config.ListenAddress, o.router)
 }
 
