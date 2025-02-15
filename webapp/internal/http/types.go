@@ -1,6 +1,6 @@
 package http
 
-import "github.com/gorilla/mux"
+import "net/http"
 
 type Config struct {
 	ListenAddress   string
@@ -10,5 +10,5 @@ type Config struct {
 // Endpoints represents the http service and its endpoints
 type Endpoints struct {
 	config Config
-	router *mux.Router
+	router *http.ServeMux
 }

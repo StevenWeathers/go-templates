@@ -8,17 +8,16 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gorilla/mux"
 	"github.com/stevenweathers/go-templates/webapp/ui"
 )
 
 func (o *Endpoints) handle() {
 	uiFS := ui.New(o.config.UseOSFilesystem)
 	// k8s healthcheck /healthz as per convention
-	o.router.HandleFunc("/healthz", o.handleHealthz).Methods(http.MethodGet)
+	o.router.HandleFunc("GET /healthz", o.handleHealthz)
 
 	// index/static
-	o.router.PathPrefix("/").Handler(http.StripPrefix("/", spaHandler(uiFS)))
+	o.router.Handle("/", http.StripPrefix("/", spaHandler(uiFS)))
 }
 
 func spaHandler(uiFS http.FileSystem) http.Handler {
@@ -52,7 +51,7 @@ func (o *Endpoints) ListenAndServe(ctx context.Context) error {
 }
 
 func New(config Config) *Endpoints {
-	router := mux.NewRouter()
+	router := http.NewServeMux()
 	e := &Endpoints{
 		config: config,
 		router: router,
